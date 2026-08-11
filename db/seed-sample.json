@@ -1,0 +1,646 @@
+[
+  {
+    "id": "16",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Aurore",
+      "Type_Exercice": "ESPACE_CLOS",
+      "Nom_Exercice": "ESPACE CLOS",
+      "Date_Realisation": "2026-01-05",
+      "Semaine": 2,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "20",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Polaris",
+      "Type_Exercice": "MEDICAL",
+      "Nom_Exercice": "ASSISTANCE MÉDICALE",
+      "Date_Realisation": "2026-01-12",
+      "Semaine": 3,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "2",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Atlas",
+      "Type_Exercice": "LARGAGE",
+      "Nom_Exercice": "LARGAGE / REMORQUAGE D'URGENCE",
+      "Date_Realisation": "2026-01-24",
+      "Semaine": 4,
+      "Annee": 2026,
+      "Saisi_Par": "A. Dubois",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0002",
+      "SafetyCulture_Audit_ID": "demo_audit_0002"
+    }
+  },
+  {
+    "id": "12",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Vega",
+      "Type_Exercice": "MOB",
+      "Nom_Exercice": "HOMME À LA MER",
+      "Date_Realisation": "2026-01-29",
+      "Semaine": 5,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "11",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Polaris",
+      "Type_Exercice": "MEDICAL",
+      "Nom_Exercice": "ASSISTANCE MÉDICALE",
+      "Date_Realisation": "2026-02-01",
+      "Semaine": 5,
+      "Annee": 2026,
+      "Saisi_Par": "C. Petit",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0011",
+      "SafetyCulture_Audit_ID": "demo_audit_0011"
+    }
+  },
+  {
+    "id": "15",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Orion",
+      "Type_Exercice": "ENVAHISSEMENT",
+      "Nom_Exercice": "ASSÈCHEMENT / ENVAHISSEMENT / VOIE D'EAU",
+      "Date_Realisation": "2026-02-02",
+      "Semaine": 6,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "1",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Polaris",
+      "Type_Exercice": "LARGAGE",
+      "Nom_Exercice": "LARGAGE / REMORQUAGE D'URGENCE",
+      "Date_Realisation": "2026-02-07",
+      "Semaine": 6,
+      "Annee": 2026,
+      "Saisi_Par": "S. Lefevre",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0001",
+      "SafetyCulture_Audit_ID": "demo_audit_0001"
+    }
+  },
+  {
+    "id": "38",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Polaris",
+      "Type_Exercice": "POLLUTION",
+      "Nom_Exercice": "POLLUTION",
+      "Date_Realisation": "2026-02-10",
+      "Semaine": 7,
+      "Annee": 2026,
+      "Saisi_Par": "S. Lefevre",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0038",
+      "SafetyCulture_Audit_ID": "demo_audit_0038"
+    }
+  },
+  {
+    "id": "3",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Atlas",
+      "Type_Exercice": "MOB",
+      "Nom_Exercice": "HOMME À LA MER",
+      "Date_Realisation": "2026-02-11",
+      "Semaine": 7,
+      "Annee": 2026,
+      "Saisi_Par": "C. Petit",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0003",
+      "SafetyCulture_Audit_ID": "demo_audit_0003"
+    }
+  },
+  {
+    "id": "33",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Aurore",
+      "Type_Exercice": "ESPACE_CLOS",
+      "Nom_Exercice": "ESPACE CLOS",
+      "Date_Realisation": "2026-02-21",
+      "Semaine": 8,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "31",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Sirius",
+      "Type_Exercice": "AVARIE",
+      "Nom_Exercice": "AVARIE / BARRE EN SECOURS",
+      "Date_Realisation": "2026-03-19",
+      "Semaine": 12,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "4",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Atlas",
+      "Type_Exercice": "ESPACE_CLOS",
+      "Nom_Exercice": "ESPACE CLOS",
+      "Date_Realisation": "2026-03-21",
+      "Semaine": 12,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "36",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Polaris",
+      "Type_Exercice": "AVARIE",
+      "Nom_Exercice": "AVARIE / BARRE EN SECOURS",
+      "Date_Realisation": "2026-03-21",
+      "Semaine": 12,
+      "Annee": 2026,
+      "Saisi_Par": "S. Lefevre",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0036",
+      "SafetyCulture_Audit_ID": "demo_audit_0036"
+    }
+  },
+  {
+    "id": "21",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Orion",
+      "Type_Exercice": "ESPACE_CLOS",
+      "Nom_Exercice": "ESPACE CLOS",
+      "Date_Realisation": "2026-03-22",
+      "Semaine": 12,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "28",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Neptune",
+      "Type_Exercice": "ABANDON",
+      "Nom_Exercice": "ABANDON",
+      "Date_Realisation": "2026-04-06",
+      "Semaine": 15,
+      "Annee": 2026,
+      "Saisi_Par": "A. Dubois",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0028",
+      "SafetyCulture_Audit_ID": "demo_audit_0028"
+    }
+  },
+  {
+    "id": "32",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Aurore",
+      "Type_Exercice": "ENVAHISSEMENT",
+      "Nom_Exercice": "ASSÈCHEMENT / ENVAHISSEMENT / VOIE D'EAU",
+      "Date_Realisation": "2026-04-09",
+      "Semaine": 15,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "6",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Atlas",
+      "Type_Exercice": "ENVAHISSEMENT",
+      "Nom_Exercice": "ASSÈCHEMENT / ENVAHISSEMENT / VOIE D'EAU",
+      "Date_Realisation": "2026-04-11",
+      "Semaine": 15,
+      "Annee": 2026,
+      "Saisi_Par": "S. Lefevre",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0006",
+      "SafetyCulture_Audit_ID": "demo_audit_0006"
+    }
+  },
+  {
+    "id": "7",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Orion",
+      "Type_Exercice": "ESPACE_CLOS",
+      "Nom_Exercice": "ESPACE CLOS",
+      "Date_Realisation": "2026-04-15",
+      "Semaine": 16,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "37",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Orion",
+      "Type_Exercice": "INCENDIE",
+      "Nom_Exercice": "INCENDIE",
+      "Date_Realisation": "2026-04-16",
+      "Semaine": 16,
+      "Annee": 2026,
+      "Saisi_Par": "M. Bernard",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0037",
+      "SafetyCulture_Audit_ID": "demo_audit_0037"
+    }
+  },
+  {
+    "id": "14",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Polaris",
+      "Type_Exercice": "ABANDON",
+      "Nom_Exercice": "ABANDON",
+      "Date_Realisation": "2026-04-20",
+      "Semaine": 17,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "9",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Meridian",
+      "Type_Exercice": "ENVAHISSEMENT",
+      "Nom_Exercice": "ASSÈCHEMENT / ENVAHISSEMENT / VOIE D'EAU",
+      "Date_Realisation": "2026-05-07",
+      "Semaine": 19,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "40",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Neptune",
+      "Type_Exercice": "ESPACE_CLOS",
+      "Nom_Exercice": "ESPACE CLOS",
+      "Date_Realisation": "2026-05-09",
+      "Semaine": 19,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "5",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Aurore",
+      "Type_Exercice": "LARGAGE",
+      "Nom_Exercice": "LARGAGE / REMORQUAGE D'URGENCE",
+      "Date_Realisation": "2026-05-17",
+      "Semaine": 20,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "8",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Aurore",
+      "Type_Exercice": "INCENDIE",
+      "Nom_Exercice": "INCENDIE",
+      "Date_Realisation": "2026-05-20",
+      "Semaine": 21,
+      "Annee": 2026,
+      "Saisi_Par": "M. Bernard",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0008",
+      "SafetyCulture_Audit_ID": "demo_audit_0008"
+    }
+  },
+  {
+    "id": "17",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Orion",
+      "Type_Exercice": "ENVAHISSEMENT",
+      "Nom_Exercice": "ASSÈCHEMENT / ENVAHISSEMENT / VOIE D'EAU",
+      "Date_Realisation": "2026-05-21",
+      "Semaine": 21,
+      "Annee": 2026,
+      "Saisi_Par": "J. Martin",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0017",
+      "SafetyCulture_Audit_ID": "demo_audit_0017"
+    }
+  },
+  {
+    "id": "22",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Neptune",
+      "Type_Exercice": "ABANDON",
+      "Nom_Exercice": "ABANDON",
+      "Date_Realisation": "2026-05-21",
+      "Semaine": 21,
+      "Annee": 2026,
+      "Saisi_Par": "S. Lefevre",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0022",
+      "SafetyCulture_Audit_ID": "demo_audit_0022"
+    }
+  },
+  {
+    "id": "25",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Polaris",
+      "Type_Exercice": "ENVAHISSEMENT",
+      "Nom_Exercice": "ASSÈCHEMENT / ENVAHISSEMENT / VOIE D'EAU",
+      "Date_Realisation": "2026-05-28",
+      "Semaine": 22,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "34",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Vega",
+      "Type_Exercice": "INCENDIE",
+      "Nom_Exercice": "INCENDIE",
+      "Date_Realisation": "2026-06-01",
+      "Semaine": 23,
+      "Annee": 2026,
+      "Saisi_Par": "C. Petit",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0034",
+      "SafetyCulture_Audit_ID": "demo_audit_0034"
+    }
+  },
+  {
+    "id": "35",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Atlas",
+      "Type_Exercice": "MOB",
+      "Nom_Exercice": "HOMME À LA MER",
+      "Date_Realisation": "2026-06-03",
+      "Semaine": 23,
+      "Annee": 2026,
+      "Saisi_Par": "A. Dubois",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0035",
+      "SafetyCulture_Audit_ID": "demo_audit_0035"
+    }
+  },
+  {
+    "id": "27",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Meridian",
+      "Type_Exercice": "ABANDON",
+      "Nom_Exercice": "ABANDON",
+      "Date_Realisation": "2026-06-04",
+      "Semaine": 23,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "29",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Meridian",
+      "Type_Exercice": "LARGAGE",
+      "Nom_Exercice": "LARGAGE / REMORQUAGE D'URGENCE",
+      "Date_Realisation": "2026-07-04",
+      "Semaine": 27,
+      "Annee": 2026,
+      "Saisi_Par": "J. Martin",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0029",
+      "SafetyCulture_Audit_ID": "demo_audit_0029"
+    }
+  },
+  {
+    "id": "23",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Sirius",
+      "Type_Exercice": "INCENDIE",
+      "Nom_Exercice": "INCENDIE",
+      "Date_Realisation": "2026-07-08",
+      "Semaine": 28,
+      "Annee": 2026,
+      "Saisi_Par": "C. Petit",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0023",
+      "SafetyCulture_Audit_ID": "demo_audit_0023"
+    }
+  },
+  {
+    "id": "26",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Neptune",
+      "Type_Exercice": "ENVAHISSEMENT",
+      "Nom_Exercice": "ASSÈCHEMENT / ENVAHISSEMENT / VOIE D'EAU",
+      "Date_Realisation": "2026-07-12",
+      "Semaine": 28,
+      "Annee": 2026,
+      "Saisi_Par": "J. Martin",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0026",
+      "SafetyCulture_Audit_ID": "demo_audit_0026"
+    }
+  },
+  {
+    "id": "13",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Meridian",
+      "Type_Exercice": "MOB",
+      "Nom_Exercice": "HOMME À LA MER",
+      "Date_Realisation": "2026-07-13",
+      "Semaine": 29,
+      "Annee": 2026,
+      "Saisi_Par": "M. Bernard",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0013",
+      "SafetyCulture_Audit_ID": "demo_audit_0013"
+    }
+  },
+  {
+    "id": "19",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Polaris",
+      "Type_Exercice": "LARGAGE",
+      "Nom_Exercice": "LARGAGE / REMORQUAGE D'URGENCE",
+      "Date_Realisation": "2026-07-14",
+      "Semaine": 29,
+      "Annee": 2026,
+      "Saisi_Par": "J. Martin",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0019",
+      "SafetyCulture_Audit_ID": "demo_audit_0019"
+    }
+  },
+  {
+    "id": "24",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Sirius",
+      "Type_Exercice": "MOUILLAGE",
+      "Nom_Exercice": "MOUILLAGE D'URGENCE",
+      "Date_Realisation": "2026-07-18",
+      "Semaine": 29,
+      "Annee": 2026,
+      "Saisi_Par": "C. Petit",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0024",
+      "SafetyCulture_Audit_ID": "demo_audit_0024"
+    }
+  },
+  {
+    "id": "10",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Vega",
+      "Type_Exercice": "MOUILLAGE",
+      "Nom_Exercice": "MOUILLAGE D'URGENCE",
+      "Date_Realisation": "2026-07-26",
+      "Semaine": 30,
+      "Annee": 2026,
+      "Saisi_Par": "C. Petit",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0010",
+      "SafetyCulture_Audit_ID": "demo_audit_0010"
+    }
+  },
+  {
+    "id": "39",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Atlas",
+      "Type_Exercice": "POLLUTION",
+      "Nom_Exercice": "POLLUTION",
+      "Date_Realisation": "2026-08-02",
+      "Semaine": 31,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  },
+  {
+    "id": "30",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Orion",
+      "Type_Exercice": "ENVAHISSEMENT",
+      "Nom_Exercice": "ASSÈCHEMENT / ENVAHISSEMENT / VOIE D'EAU",
+      "Date_Realisation": "2026-08-04",
+      "Semaine": 32,
+      "Annee": 2026,
+      "Saisi_Par": "C. Petit",
+      "Observations": "Exercice réalisé conformément au scénario prévu.",
+      "Source": "SafetyCulture",
+      "Lien_Inspection": "https://example.com/demo-inspection/0030",
+      "SafetyCulture_Audit_ID": "demo_audit_0030"
+    }
+  },
+  {
+    "id": "18",
+    "createdTime": "2026-08-11T08:30:07.374Z",
+    "fields": {
+      "Navire": "Meridian",
+      "Type_Exercice": "INCENDIE",
+      "Nom_Exercice": "INCENDIE",
+      "Date_Realisation": "2026-08-08",
+      "Semaine": 32,
+      "Annee": 2026,
+      "Saisi_Par": "Saisie manuelle",
+      "Observations": "",
+      "Source": "Manuel"
+    }
+  }
+]

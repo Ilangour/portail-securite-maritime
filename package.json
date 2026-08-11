@@ -1,0 +1,21 @@
+{
+  "name": "portail-securite-maritime",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Portail de suivi des exercices de sécurité maritime pour une flotte de navires, avec intégration SafetyCulture",
+  "scripts": {
+    "test": "playwright test",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "eslint": "^9.39.5",
+    "globals": "^15.15.0"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "@sentry/node": "^10.69.0",
+    "google-auth-library": "^10.9.1",
+    "pg": "^8.22.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/airtable.js":                { "maxDuration": 10 },
+    "api/db.js":                      { "maxDuration": 10 },
+    "api/safetyculture-webhook.js":   { "maxDuration": 30 },
+    "api/backup.js":                  { "maxDuration": 30 },
+    "api/reconcile-safetyculture.js": { "maxDuration": 60 }
+  },
+  "crons": [
+    { "path": "/api/backup", "schedule": "0 3 * * *" },
+    { "path": "/api/reconcile-safetyculture", "schedule": "0 4 * * *" }
+  ]
+}

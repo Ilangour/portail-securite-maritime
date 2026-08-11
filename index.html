@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portail Sécurité Maritime</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%94%A5</text></svg>">
+  <link rel="stylesheet" href="style.css?v=28">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Sentry (monitoring erreurs JS) — clé publique, chargement asynchrone,
+       ne bloque jamais le rendu si le CDN est indisponible. window.sentryOnLoad
+       doit être défini AVANT le script du loader (contrainte Sentry). -->
+  <script>
+    // environment déduit du domaine (pas d'accès aux variables Vercel côté navigateur) :
+    // à adapter au nom réel de votre projet Vercel (ex: "mon-projet-recette.vercel.app"
+    // pour l'alias recette, "mon-projet-<hash>-<equipe>.vercel.app" pour les previews)
+    window.sentryOnLoad = function () {
+      Sentry.init({
+        environment: location.hostname.includes('recette') || /^mon-projet-[a-z0-9]+-/.test(location.hostname)
+          ? 'preview' : 'production',
+      });
+    };
+  </script>
+  <!-- Remplacer par la clé publique de votre projet Sentry (Settings > Loader Script) -->
+  <script src="https://js.sentry-cdn.com/VOTRE_CLE_PUBLIQUE_SENTRY.min.js" crossorigin="anonymous"></script>
+  <style>
+    /* ── styles spécifiques au portail unifié ── */
+    .refresh-bar {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px; padding: 5px 12px;
+      font-size: 12px; color: rgba(255,255,255,0.85);
+    }
+    .pulse {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #4caf50; flex-shrink: 0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .pulse.updating { background: #ff9800; animation: none; }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(.75); }
+    }
+    .refresh-btn {
+      background: none; border: none; color: rgba(255,255,255,0.7);
+      cursor: pointer; font-size: 15px; padding: 0; line-height: 1;
+      transition: transform .3s;
+    }
+    .refresh-btn:hover { color: white; }
+    .refresh-btn.spinning { animation: spin .7s linear infinite; }
+
+    /* Saisie compacte intégrée */
+    .saisie-inline {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+    .saisie-inline-head {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: white; padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .saisie-inline-head h2 { font-size: 14px; font-weight: 700; }
+    .toggle-form-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white; padding: 4px 12px; border-radius: 6px;
+      font-size: 12px; cursor: pointer; font-weight: 600;
+    }
+    .saisie-inline-body { padding: 20px; }
+
+    /* Grille exercices compacte */
+    .ex-grid-compact {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 8px; margin-bottom: 16px;
+    }
+    .ex-card-compact {
+      border: 2px solid var(--border); border-radius: 8px;
+      padding: 8px 6px; cursor: pointer; text-align: center;
+      transition: all .15s; background: white;
+    }
+    .ex-card-compact:hover         { border-color: var(--blue); background: var(--sky); }
+    .ex-card-compact.selected      { border-color: var(--blue); background: var(--sky); box-shadow: 0 0 0 3px rgba(21,101,192,0.15); }
+    .ex-card-compact.state-overdue { border-color: var(--red); }
+    .ex-card-compact.state-warning { border-color: var(--orange); }
+    .ex-icon-sm  { font-size: 18px; margin-bottom: 3px; }
+    .ex-name-sm  { font-size: 9px; font-weight: 800; color: var(--navy); text-transform: uppercase; line-height: 1.2; }
+    .ex-stat-sm  { font-size: 9px; margin-top: 2px; }
+
+    .form-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+    .form-row .form-group { margin-bottom: 0; flex: 1; min-width: 140px; }
+
+    .histo-filters {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+    }
+    .histo-filters #histo-search { flex: 1; min-width: 220px; }
+    .histo-filters #histo-filter-exercice { max-width: 240px; }
+    .form-row .btn { flex: 0 0 auto; }
+
+    /* HSE mini section */
+    .hse-section .section-body { padding: 16px 20px; }
+    .hse-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px; margin-bottom: 16px;
+    }
+    .hse-kpi {
+      background: var(--sky); border-radius: 8px;
+      padding: 12px 14px; text-align: center;
+      border-left: 3px solid var(--blue);
+    }
+    .hse-kpi.danger { border-left-color: var(--red); background: var(--red-bg); }
+    .hse-kpi.warn   { border-left-color: var(--orange); background: var(--orange-bg); }
+    .hse-kpi-val    { font-size: 28px; font-weight: 800; color: var(--navy); line-height: 1; }
+    .hse-kpi-val.danger { color: var(--red); }
+    .hse-kpi-lbl    { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .4px; margin-top: 4px; }
+
+    /* Actions urgentes */
+    .action-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .action-row:last-child { border-bottom: none; }
+    .action-prio { flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; }
+    .action-prio.haute   { background: var(--red); }
+    .action-prio.moyenne { background: var(--orange); }
+    .action-prio.basse   { background: var(--green); }
+    .action-info { flex: 1; }
+    .action-titre { font-weight: 700; font-size: 13px; }
+    .action-meta  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .action-date  { font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .action-date.late { color: var(--red); }
+    .action-date.soon { color: var(--orange); }
+
+    /* Status cards rapides */
+    .quick-status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px; margin-bottom: 22px;
+    }
+    .quick-card {
+      background: var(--card); border-radius: 10px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      border-left: 4px solid var(--green);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .quick-card.orange { border-left-color: var(--orange); }
+    .quick-card.red    { border-left-color: var(--red); background: #fff5f5; }
+    .quick-card .q-icon { font-size: 22px; flex-shrink: 0; }
+    .quick-card .q-info { flex: 1; min-width: 0; }
+    .quick-card .q-nom  { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .quick-card .q-stat { font-size: 12px; margin-top: 1px; font-weight: 600; }
+
+    .section-toggle { cursor: pointer; user-select: none; }
+    .section-toggle:hover .section-header { opacity: .85; }
+
+    @media (max-width: 640px) {
+      .ex-grid-compact { grid-template-columns: repeat(4, 1fr); }
+      .form-row { flex-direction: column; }
+    }
+
+    /* Navigation par pages */
+    .page-tabs {
+      display: flex; gap: 8px; padding: 10px 24px;
+      background: var(--navy-dark);
+      position: sticky; top: 65px; z-index: 90;
+      flex-wrap: wrap;
+    }
+    .page-tab {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.85);
+      padding: 8px 18px; border-radius: 6px;
+      font-size: 13px; font-weight: 700; letter-spacing: .2px;
+      cursor: pointer; transition: all .15s;
+    }
+    .page-tab:hover  { background: rgba(255,255,255,0.2); color: white; }
+    .page-tab.active { background: var(--blue); border-color: var(--blue-light); color: white; }
+
+    /* Les pages inactives restent dans le flux (juste invisibles) plutôt que
+       display:none — un canvas Chart.js mesuré dans un conteneur display:none
+       obtient une largeur de 0 et ne se rétablit pas correctement ensuite. */
+    main { position: relative; }
+    .page {
+      position: absolute; top: 0; left: 0; width: 100%;
+      visibility: hidden; pointer-events: none; z-index: 0;
+      max-height: 0; overflow: hidden;
+    }
+    .page.active {
+      position: relative; visibility: visible; pointer-events: auto; z-index: 1;
+      max-height: none; overflow: visible;
+    }
+    .page-placeholder {
+      text-align: center; color: var(--muted);
+      padding: 60px 20px; font-size: 14px;
+    }
+
+    /* Écran de connexion Google — masque le portail tant que non connecté */
+    #app-root.app-hidden { display: none; }
+    .login-overlay {
+      display: none; /* activé via JS (classe .active) une fois GIS chargé */
+      min-height: 100vh; align-items: center; justify-content: center;
+      background: var(--navy-dark, #0d1b2a);
+    }
+    .login-overlay.active { display: flex; }
+    .login-box {
+      background: var(--card, white); border-radius: 14px;
+      padding: 40px 44px; text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      max-width: 360px;
+    }
+    .login-logo { display: block; font-size: 40px; margin-bottom: 16px; }
+    .login-box h2 { font-size: 16px; margin-bottom: 6px; }
+    .login-box .muted { font-size: 13px; margin-bottom: 20px; }
+    #google-signin-button { display: flex; justify-content: center; }
+    .login-error {
+      margin-top: 16px; color: var(--red); font-size: 13px; font-weight: 600;
+    }
+
+    .last-entry-box {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap;
+      background: var(--green-bg); border-color: var(--green);
+    }
+    .btn-undo {
+      background: white; border: 1px solid var(--red); color: var(--red);
+      padding: 7px 14px; border-radius: 6px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      white-space: nowrap; transition: all .15s;
+    }
+    .btn-undo:hover { background: var(--red); color: white; }
+
+    .btn-delete-histo {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      padding: 4px 8px; border-radius: 6px;
+      font-size: 13px; cursor: pointer; transition: all .15s;
+    }
+    .btn-delete-histo:hover { background: var(--red); border-color: var(--red); color: white; }
+    .btn-delete-histo:disabled { opacity: .5; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <!-- ══ CONNEXION GOOGLE ══ -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-box">
+      <span class="login-logo" aria-hidden="true">🔥</span>
+      <h2>Portail Sécurité Maritime</h2>
+      <p class="muted">Connexion requise (compte de l'entreprise)</p>
+      <div id="google-signin-button"></div>
+      <p id="login-error" class="login-error hidden"></p>
+    </div>
+  </div>
+
+  <div id="app-root" class="app-hidden">
+
+  <!-- ══ HEADER ══ -->
+  <header class="header">
+    <div class="header-brand">
+      <span class="header-logo" aria-hidden="true">🔥</span>
+      <div>
+        <h1>PORTAIL SÉCURITÉ MARITIME</h1>
+        <p id="header-sub">Chargement…</p>
+      </div>
+    </div>
+    <div class="header-controls">
+      <select id="sel-navire"></select>
+      <select id="sel-annee"></select>
+      <div class="refresh-bar">
+        <div class="pulse" id="pulse-dot"></div>
+        <span id="last-update">—</span>
+        <button class="refresh-btn" id="btn-refresh" title="Actualiser">↺</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="page-tabs">
+    <button class="page-tab" data-page="planning">📅 Planning</button>
+    <button class="page-tab" data-page="indicateurs">📊 Indicateurs</button>
+    <button class="page-tab" data-page="historique">📜 Historique</button>
+  </nav>
+
+  <main>
+
+    <div class="page" id="page-planning">
+
+    <!-- ══ STATUTS RAPIDES (cartes RAG par exercice) ══ -->
+    <div class="quick-status-grid" id="quick-status"></div>
+
+    <!-- ══ PROCHAIN EXERCICE À FAIRE ══ -->
+    <div class="section" id="next-ex-section">
+      <div class="section-header"><span>⏭️</span><h2>PROCHAINS EXERCICES À RÉALISER (7 JOURS)</h2></div>
+      <div class="section-body" id="next-ex-body">
+        <div class="loading">Chargement…</div>
+      </div>
+    </div>
+
+    <!-- ══ PLANNING SEMAINIER ══ -->
+    <div class="section">
+      <div class="section-header"><span>📅</span><h2>PLANNING SEMAINIER — S1 À S53</h2></div>
+      <div class="section-body" style="padding:14px">
+        <div class="legend" style="margin-bottom:10px">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--cell-p);border:1px solid #90caf9"></div>P — Planifié</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--cell-pr)"></div>PR — Conforme</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--cell-r)"></div>R — Réalisé</div>
+          <div class="legend-item"><div class="legend-dot" style="border:2px solid var(--red);background:white"></div>Semaine en cours</div>
+        </div>
+        <div class="planning-scroll" id="planning-wrap"><div class="loading">Chargement…</div></div>
+      </div>
+    </div>
+
+    <!-- ══ SAISIE SIMPLIFIÉE ══ -->
+    <div class="saisie-inline">
+      <div class="saisie-inline-head">
+        <h2>✏️ Enregistrer un exercice réalisé</h2>
+        <button class="toggle-form-btn" id="toggle-form-btn" onclick="toggleForm()">▲ Masquer</button>
+      </div>
+      <div class="saisie-inline-body" id="form-body">
+
+        <div class="form-row">
+          <div class="form-group" style="min-width:240px">
+            <label class="form-label">Exercice réalisé</label>
+            <select id="sel-exercice" class="form-select">
+              <option value="">— Choisir un exercice —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date de réalisation</label>
+            <input type="date" id="date-realisation" class="form-input">
+          </div>
+          <div style="padding-top:22px">
+            <button id="btn-submit" class="btn btn-primary" disabled style="width:auto;padding:11px 24px">
+              ✓ Enregistrer
+            </button>
+          </div>
+        </div>
+
+        <div id="ref-inline" class="ref-box hidden"></div>
+        <div id="form-error" class="ref-box hidden" style="background:var(--red-bg);color:var(--red);font-weight:600"></div>
+
+        <div id="last-entry-box" class="ref-box hidden last-entry-box">
+          <span id="last-entry-text"></span>
+          <button id="btn-undo" class="btn-undo">↩ Annuler cette saisie</button>
+        </div>
+
+        <div id="drafts-banner" class="ref-box hidden" style="background:var(--orange-bg);color:var(--orange);font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <span id="drafts-banner-text"></span>
+          <button id="btn-resend-drafts" class="btn btn-primary" style="width:auto;padding:8px 16px">↻ Renvoyer</button>
+        </div>
+      </div>
+    </div>
+
+    </div> <!-- /page-planning -->
+
+    <div class="page" id="page-indicateurs">
+
+      <!-- ══ KPI GLOBAUX ══ -->
+      <div class="kpi-grid">
+        <div class="kpi-card green">
+          <div class="kpi-value green" id="kpi-conformite">—</div>
+          <div class="kpi-label">Taux de conformité</div>
+        </div>
+        <div class="kpi-card red">
+          <div class="kpi-value" id="kpi-manquants">—</div>
+          <div class="kpi-label">Manquants</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" id="kpi-ratio">—</div>
+          <div class="kpi-label">Réalisé / Planifié</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" id="kpi-total">—</div>
+          <div class="kpi-label">Exercices réalisés</div>
+        </div>
+        <div class="kpi-card green" id="kpi-retards-card">
+          <div class="kpi-value green" id="kpi-retards">—</div>
+          <div class="kpi-label" id="kpi-retards-label">À jour réglementairement</div>
+        </div>
+      </div>
+
+      <!-- ══ TABLEAU RÉGLEMENTAIRE ══ -->
+      <div class="section">
+        <div class="section-header">
+          <span>📋</span>
+          <h2>ÉTAT RÉGLEMENTAIRE — DERNIER ET PROCHAIN EXERCICE</h2>
+        </div>
+        <div style="overflow-x:auto">
+          <div id="status-loading" class="loading">Chargement…</div>
+          <table class="data-table hidden" id="status-table">
+            <thead>
+              <tr>
+                <th>Exercice</th>
+                <th>Référence réglementaire</th>
+                <th style="text-align:center">Fréq. (j)</th>
+                <th>Dernier réalisé *</th>
+                <th>Prochain avant</th>
+                <th style="text-align:center">Jours</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="status-tbody"></tbody>
+          </table>
+          <p class="note" style="padding:0 16px 10px">
+            * Enregistré par formulaire du tableau de bord ou Safety Culture
+          </p>
+        </div>
+      </div>
+
+      <!-- ══ STATS + HISTOGRAMME ══ -->
+      <div class="two-col">
+        <div class="section">
+          <div class="section-header"><span>📊</span><h2>STATISTIQUES PAR EXERCICE</h2></div>
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Exercice</th>
+                  <th class="tr">Planifié</th>
+                  <th class="tr">Réalisé</th>
+                  <th class="tr">Conforme</th>
+                  <th class="tr">Manquant</th>
+                  <th class="tr">Taux</th>
+                </tr>
+              </thead>
+              <tbody id="stats-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header"><span>📈</span><h2>HISTOGRAMME — RÉALISÉ / CONFORME / MANQUANT</h2></div>
+          <div class="section-body">
+            <div class="chart-wrap"><canvas id="chart-histo"></canvas></div>
+            <div class="legend">
+              <div class="legend-item"><div class="legend-dot" style="background:rgba(21,101,192,.85)"></div>Réalisé</div>
+              <div class="legend-item"><div class="legend-dot" style="background:rgba(46,125,50,.85)"></div>Conforme</div>
+              <div class="legend-item"><div class="legend-dot" style="background:rgba(198,40,40,.85)"></div>Manquant</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page" id="page-historique">
+      <!-- ══ HISTORIQUE ══ -->
+      <div class="section">
+        <div class="section-header"><span>📜</span><h2>HISTORIQUE DES EXERCICES RÉALISÉS</h2></div>
+        <div class="histo-filters">
+          <input type="text" id="histo-search" class="form-input" placeholder="Rechercher (exercice, saisi par, observations, date...)">
+          <select id="histo-filter-exercice" class="form-select">
+            <option value="">Tous les exercices</option>
+          </select>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th><th style="text-align:center">Sem.</th><th>Exercice</th>
+                <th>Conformité</th><th>Source</th><th>Saisi par</th><th>Observations</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="historique-tbody"><tr><td colspan="8" class="loading">Chargement…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  </div> <!-- /app-root -->
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="config.js?v=38"></script>
+  <script src="lib/planning-logic.js?v=29"></script>
+  <script src="lib/dashboard-logic.js?v=1"></script>
+  <script src="portail.js?v=35"></script>
+</body>
+</html>
