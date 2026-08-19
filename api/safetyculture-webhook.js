@@ -112,7 +112,7 @@ export default async function handler(req, res) {
     const created = [];
     const completed = [];
     for (const label of typeLabels) {
-      const typeExercice = mapExerciceLabel(label);
+      const typeExercice = mapExerciceLabel(label, navire);
       const catalogueEntry = CONFIG.CATALOGUE.find(e => e.id === typeExercice);
       const nomExercice = catalogueEntry ? catalogueEntry.nom : label;
 

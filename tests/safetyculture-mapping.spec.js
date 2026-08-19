@@ -55,6 +55,18 @@ test.describe('mapExerciceLabel', () => {
     expect(mapExerciceLabel('AUTRE')).toBe('AUTRE');
     expect(mapExerciceLabel('UN LIBELLE JAMAIS VU')).toBe('UN LIBELLE JAMAIS VU');
   });
+
+  test('"AUTRE" -> DP sur les navires sans option DP dédiée dans le template', () => {
+    expect(mapExerciceLabel('AUTRE', 'Aurore')).toBe('DP');
+    expect(mapExerciceLabel('AUTRE', 'Meridian')).toBe('DP');
+    expect(mapExerciceLabel('AUTRE', 'Neptune')).toBe('DP');
+  });
+
+  test('"AUTRE" reste "AUTRE" sur un navire sans DP', () => {
+    expect(mapExerciceLabel('AUTRE', 'Sirius')).toBe('AUTRE');
+    expect(mapExerciceLabel('AUTRE', 'Orion')).toBe('AUTRE');
+    expect(mapExerciceLabel('AUTRE', undefined)).toBe('AUTRE');
+  });
 });
 
 test.describe('resolveReconciliation', () => {

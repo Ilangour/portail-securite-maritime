@@ -87,7 +87,7 @@ export default async function handler(req, res) {
             SELECT type_exercice FROM exercices_realises WHERE safetyculture_audit_id = ${auditId}
           `;
           const existingTypes = new Set(existing.map(r => r.type_exercice));
-          const missingLabels = typeLabels.filter(label => !existingTypes.has(mapExerciceLabel(label)));
+          const missingLabels = typeLabels.filter(label => !existingTypes.has(mapExerciceLabel(label, navire)));
           if (missingLabels.length === 0) continue;
 
           const linkRes = await fetch(`https://api.safetyculture.io/audits/${auditId}/web_report_link`, { headers: scHeaders });
@@ -97,7 +97,7 @@ export default async function handler(req, res) {
           const dateObj = new Date(dateStr + 'T12:00:00');
 
           for (const label of missingLabels) {
-            const typeExercice = mapExerciceLabel(label);
+            const typeExercice = mapExerciceLabel(label, navire);
             const catalogueEntry = CONFIG.CATALOGUE.find(e => e.id === typeExercice);
             const nomExercice = catalogueEntry ? catalogueEntry.nom : label;
 
