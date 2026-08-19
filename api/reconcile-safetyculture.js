@@ -22,7 +22,7 @@ import safetycultureMapping from '../lib/safetyculture-mapping.js';
 import planningLogic from '../lib/planning-logic.js';
 import Sentry from './_sentry.js';
 
-const { mapSiteToNavire, mapExerciceLabel, extractExerciseData } = safetycultureMapping;
+const { mapSiteToNavire, mapExerciceLabel, extractExerciseData, resolveReconciliation } = safetycultureMapping;
 const { isoWeek } = planningLogic;
 
 const TARGET_TEMPLATE_ID = process.env.SAFETYCULTURE_TEMPLATE_ID; // id du template "Exercices de sécurité" dans votre compte SafetyCulture
@@ -70,6 +70,7 @@ export default async function handler(req, res) {
         const auditIds = await fetchRecentAuditIds(scHeaders, since);
 
         const created = [];
+        const completed = [];
         for (const auditId of auditIds) {
           const inspRes = await fetch(`https://api.safetyculture.io/audits/${auditId}`, { headers: scHeaders });
           if (!inspRes.ok) continue;
@@ -100,6 +101,39 @@ export default async function handler(req, res) {
             const catalogueEntry = CONFIG.CATALOGUE.find(e => e.id === typeExercice);
             const nomExercice = catalogueEntry ? catalogueEntry.nom : label;
 
+            // Rapprochement avec une éventuelle saisie manuelle déjà présente
+            // pour ce navire/type/date (voir lib/safetyculture-mapping.js
+            // pour le détail) : si un match sûr existe, on la complète au
+            // lieu d'insérer une nouvelle ligne (évite un doublon).
+            const candidates = await sql`
+              SELECT id FROM exercices_realises
+              WHERE navire = ${navire} AND type_exercice = ${typeExercice} AND date_realisation = ${dateStr}
+                AND safetyculture_audit_id IS NULL AND deleted_at IS NULL
+            `;
+            const resolution = resolveReconciliation(candidates);
+
+            if (resolution.action === 'update') {
+              const [row] = await sql`
+                UPDATE exercices_realises
+                SET lien_inspection = ${lienInspection || null},
+                    safetyculture_audit_id = ${auditId},
+                    source = 'SafetyCulture',
+                    saisi_par = CASE WHEN saisi_par = '' THEN ${officier} ELSE saisi_par END,
+                    observations = CASE WHEN observations = '' THEN ${scenario} ELSE observations END
+                WHERE id = ${resolution.id}
+                RETURNING id
+              `;
+              if (row) completed.push({ id: row.id, navire, typeExercice, dateStr, auditId });
+              continue;
+            }
+
+            if (resolution.ambiguous) {
+              Sentry.captureMessage(
+                `Rapprochement SafetyCulture ambigu : plusieurs saisies manuelles correspondent à ${navire}/${typeExercice}/${dateStr} (inspection ${auditId}) — inspection insérée en plus, à fusionner manuellement`,
+                'warning'
+              );
+            }
+
             const [row] = await sql`
               INSERT INTO exercices_realises
                 (navire, type_exercice, nom_exercice, date_realisation, semaine, annee, saisi_par, observations, source, lien_inspection, safetyculture_audit_id)
@@ -125,8 +159,14 @@ export default async function handler(req, res) {
             'warning'
           );
         }
+        if (completed.length > 0) {
+          Sentry.captureMessage(
+            `Rattrapage SafetyCulture : ${completed.length} saisie(s) manuelle(s) complétée(s) plutôt que doublonnée(s) — ${completed.map(c => `${c.navire}/${c.typeExercice}/${c.dateStr}`).join(', ')}`,
+            'warning'
+          );
+        }
 
-        return { checked: auditIds.length, created: created.length, details: created };
+        return { checked: auditIds.length, created: created.length, completed: completed.length, details: { created, completed } };
       },
       { schedule: { type: 'crontab', value: '0 4 * * *' }, timezone: 'UTC', checkinMargin: 30, maxRuntime: 10 }
     );

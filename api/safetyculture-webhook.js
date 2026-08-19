@@ -20,7 +20,7 @@ import safetycultureMapping from '../lib/safetyculture-mapping.js';
 import planningLogic from '../lib/planning-logic.js';
 import Sentry from './_sentry.js';
 
-const { mapSiteToNavire, mapExerciceLabel, extractExerciseData } = safetycultureMapping;
+const { mapSiteToNavire, mapExerciceLabel, extractExerciseData, resolveReconciliation } = safetycultureMapping;
 const { isoWeek } = planningLogic;
 
 export const config = { api: { bodyParser: false } };
@@ -110,10 +110,44 @@ export default async function handler(req, res) {
     const dateObj = new Date(dateStr + 'T12:00:00');
 
     const created = [];
+    const completed = [];
     for (const label of typeLabels) {
       const typeExercice = mapExerciceLabel(label);
       const catalogueEntry = CONFIG.CATALOGUE.find(e => e.id === typeExercice);
       const nomExercice = catalogueEntry ? catalogueEntry.nom : label;
+
+      // Rapprochement avec une éventuelle saisie manuelle déjà présente pour
+      // ce navire/type/date (voir lib/safetyculture-mapping.js pour le
+      // détail) : si un match sûr existe, on la complète au lieu d'insérer
+      // une nouvelle ligne (évite un doublon).
+      const candidates = await sql`
+        SELECT id FROM exercices_realises
+        WHERE navire = ${navire} AND type_exercice = ${typeExercice} AND date_realisation = ${dateStr}
+          AND safetyculture_audit_id IS NULL AND deleted_at IS NULL
+      `;
+      const resolution = resolveReconciliation(candidates);
+
+      if (resolution.action === 'update') {
+        const [row] = await sql`
+          UPDATE exercices_realises
+          SET lien_inspection = ${lienInspection || null},
+              safetyculture_audit_id = ${auditId},
+              source = 'SafetyCulture',
+              saisi_par = CASE WHEN saisi_par = '' THEN ${officier} ELSE saisi_par END,
+              observations = CASE WHEN observations = '' THEN ${scenario} ELSE observations END
+          WHERE id = ${resolution.id}
+          RETURNING id
+        `;
+        if (row) completed.push(String(row.id));
+        continue;
+      }
+
+      if (resolution.ambiguous) {
+        Sentry.captureMessage(
+          `Rapprochement SafetyCulture ambigu : plusieurs saisies manuelles correspondent à ${navire}/${typeExercice}/${dateStr} (inspection ${auditId}) — inspection insérée en plus, à fusionner manuellement`,
+          'warning'
+        );
+      }
 
       // ON CONFLICT DO NOTHING sur l'index unique partiel de db/schema.sql
       // (safetyculture_audit_id, type_exercice) : reproduit l'anti-doublon
@@ -133,7 +167,7 @@ export default async function handler(req, res) {
       if (row) created.push(String(row.id));
     }
 
-    res.status(200).json({ ok: true, auditId, navire, created });
+    res.status(200).json({ ok: true, auditId, navire, created, completed });
   } catch (e) {
     Sentry.captureException(e);
     await Sentry.flush(2000);

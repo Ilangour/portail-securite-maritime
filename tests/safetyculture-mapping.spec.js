@@ -6,7 +6,7 @@
 //  (voir README.md, section "Intégration SafetyCulture").
 // ============================================================
 const { test, expect } = require('@playwright/test');
-const { mapSiteToNavire, mapExerciceLabel } = require('../lib/safetyculture-mapping.js');
+const { mapSiteToNavire, mapExerciceLabel, resolveReconciliation } = require('../lib/safetyculture-mapping.js');
 
 test.describe('mapSiteToNavire', () => {
   const cas = [
@@ -54,5 +54,19 @@ test.describe('mapExerciceLabel', () => {
   test('libellé non reconnu -> renvoyé tel quel (visible dans l\'Historique, pas perdu)', () => {
     expect(mapExerciceLabel('AUTRE')).toBe('AUTRE');
     expect(mapExerciceLabel('UN LIBELLE JAMAIS VU')).toBe('UN LIBELLE JAMAIS VU');
+  });
+});
+
+test.describe('resolveReconciliation', () => {
+  test('aucun candidat -> insertion normale', () => {
+    expect(resolveReconciliation([])).toEqual({ action: 'insert', ambiguous: false });
+  });
+
+  test('un candidat -> complète la saisie manuelle existante', () => {
+    expect(resolveReconciliation([{ id: 305 }])).toEqual({ action: 'update', id: 305 });
+  });
+
+  test('plusieurs candidats -> insertion quand même, mais signalée ambiguë', () => {
+    expect(resolveReconciliation([{ id: 1 }, { id: 2 }])).toEqual({ action: 'insert', ambiguous: true });
   });
 });
